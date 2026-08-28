@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_colors.dart';
 
 class AppTextTheme {
   AppTextTheme._();
 
-  static const TextTheme lightTextTheme = TextTheme(
+  static TextTheme lightTextTheme = TextTheme(
     // 20 Bold
     displayLarge: TextStyle(
       fontFamily: 'Times New Roman',
-      fontSize: 20,
+      fontSize: 20.sp,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimary,
     ),
@@ -16,7 +17,7 @@ class AppTextTheme {
     // 16 Bold
     titleLarge: TextStyle(
       fontFamily: 'Times New Roman',
-      fontSize: 16,
+      fontSize: 16.sp,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimary,
     ),
@@ -24,7 +25,7 @@ class AppTextTheme {
     // 16 Regular
     titleMedium: TextStyle(
       fontFamily: 'Times New Roman',
-      fontSize: 16,
+      fontSize: 16.sp,
       fontWeight: FontWeight.normal,
       color: AppColors.textPrimary,
     ),
@@ -32,7 +33,7 @@ class AppTextTheme {
     // 14 Regular
     bodyLarge: TextStyle(
       fontFamily: 'Times New Roman',
-      fontSize: 14,
+      fontSize: 14.sp,
       fontWeight: FontWeight.normal,
       color: AppColors.textPrimary,
     ),
@@ -40,7 +41,7 @@ class AppTextTheme {
     // 12 Regular
     bodyMedium: TextStyle(
       fontFamily: 'Times New Roman',
-      fontSize: 12,
+      fontSize: 12.sp,
       fontWeight: FontWeight.normal,
       color: AppColors.textSecondary,
     ),
@@ -48,7 +49,7 @@ class AppTextTheme {
     // 14 Bold
     labelLarge: TextStyle(
       fontFamily: 'Times New Roman',
-      fontSize: 14,
+      fontSize: 14.sp,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimary,
     ),
@@ -56,7 +57,7 @@ class AppTextTheme {
     // 12 Bold
     labelMedium: TextStyle(
       fontFamily: 'Times New Roman',
-      fontSize: 12,
+      fontSize: 12.sp,
       fontWeight: FontWeight.bold,
       color: AppColors.textSecondary,
     ),

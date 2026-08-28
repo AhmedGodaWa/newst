@@ -7,6 +7,7 @@ class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     textTheme: AppTextTheme.lightTextTheme,
+    // scaffoldBackgroundColor: const Color(0xFFf5f5f5),
 
     appBarTheme: AppBarTheme(
       titleTextStyle: AppTextTheme.lightTextTheme.titleLarge,
@@ -15,12 +16,20 @@ class AppTheme {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        minimumSize: const Size(double.infinity, 48),
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.onPrimary,
         textStyle: AppTextTheme.lightTextTheme.titleMedium!.copyWith(
           color: AppColors.onPrimary,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      ),
+    ),
+
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        textStyle: AppTextTheme.lightTextTheme.bodyLarge,
       ),
     ),
 
