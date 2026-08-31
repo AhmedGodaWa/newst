@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newst/core/theme/app_colors.dart';
+import 'package:newst/features/home/home_screen.dart';
 import 'package:newst/features/onboarding/controller/onboarding_controller.dart';
 import 'package:newst/features/onboarding/models/onboarding_model.dart';
 import 'package:provider/provider.dart';
@@ -162,10 +163,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           onPressed: () {
                             if (isLastPage) {
                               // Get Started logic
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => Home()),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(),
+                                ),
+                              );
                             }
 
                             pageController.nextPage(
