@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:newst/core/storage/app_preferences.dart';
 import 'package:newst/core/theme/app_theme.dart';
-import 'package:newst/features/onboarding/onboarding_screen.dart';
+import 'package:newst/features/splash/controllers/splash_controller.dart';
+import 'package:newst/features/splash/splash_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await AppPreferences.instance.init();
+
   runApp(const NewstApp());
 }
 
@@ -21,8 +28,10 @@ class NewstApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
-          home: const OnboardingScreen(),
-          //SplashScreen(), 
+          home: ChangeNotifierProvider(
+            create: (_) => SplashController(),
+            child: const SplashScreen(),
+          ),
         );
       },
     );

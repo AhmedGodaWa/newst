@@ -7,8 +7,8 @@ class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     textTheme: AppTextTheme.lightTextTheme,
-    // scaffoldBackgroundColor: const Color(0xFFf5f5f5),
 
+    // scaffoldBackgroundColor: const Color(0xFFf5f5f5),
     appBarTheme: AppBarTheme(
       titleTextStyle: AppTextTheme.lightTextTheme.titleLarge,
       centerTitle: true,
@@ -54,9 +54,7 @@ class AppTheme {
         color: AppColors.primary,
       ),
 
-      unselectedLabelStyle: AppTextTheme.lightTextTheme.labelMedium!.copyWith(
-        color: AppColors.textSecondary,
-      ),
+      unselectedLabelStyle: AppTextTheme.lightTextTheme.labelMedium,
     ),
   );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newst/core/theme/app_colors.dart';
-import 'package:newst/features/home/home_screen.dart';
+import 'package:newst/features/main/main_screen.dart';
 import 'package:newst/features/onboarding/controller/onboarding_controller.dart';
 import 'package:newst/features/onboarding/models/onboarding_model.dart';
 import 'package:provider/provider.dart';
@@ -50,8 +50,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               child: Align(
                                 alignment: Alignment.topRight,
                                 child: TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     // Skip logic will be added later.
+                                    await context
+                                        .read<OnboardingController>()
+                                        .completeOnboarding();
+
+                                    if (!context.mounted) return;
+
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const MainScreen(),
+                                      ),
+                                    );
                                   },
                                   child: const Text('Skip'),
                                 ),
@@ -160,15 +172,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       return SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (isLastPage) {
                               // Get Started logic
-                              Navigator.push(
+
+                              await context
+                                  .read<OnboardingController>()
+                                  .completeOnboarding();
+
+                              if (!context.mounted) return;
+
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const HomeScreen(),
+                                  builder: (context) => const MainScreen(),
                                 ),
                               );
+                              return;
                             }
 
                             pageController.nextPage(
