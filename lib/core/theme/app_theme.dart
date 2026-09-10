@@ -37,6 +37,14 @@ class AppTheme {
       filled: true,
       fillColor: AppColors.white,
 
+      hintStyle: TextStyle(
+        color: AppColors.textSecondary,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+      ),
+
+      contentPadding: EdgeInsets.all(16),
+
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.borderLight, width: 1),
       ),

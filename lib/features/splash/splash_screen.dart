@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:newst/features/auth/sign_in/sign_in_screen.dart';
 import 'package:newst/features/main/main_screen.dart';
 import 'package:newst/features/onboarding/onboarding_screen.dart';
 import 'package:newst/features/splash/controllers/splash_controller.dart';
@@ -39,18 +40,15 @@ class _SplashScreenState extends State<SplashScreen> {
       return;
     }
 
-    // final isLoggedIn = await controller.isLoggedIn();
+    final isLoggedIn = controller.isLoggedIn;
 
-    // if (!mounted) return;
-
-    // if (!isLoggedIn) {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (_) => const SignInScreen()),
-    //   );
-
-    //   return;
-    // }
+    if (!isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const SignInScreen()),
+      );
+      return;
+    }
 
     Navigator.pushReplacement(
       context,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newst/core/theme/app_colors.dart';
+import 'package:newst/core/widgets/custom_button.dart';
+import 'package:newst/features/auth/sign_in/sign_in_screen.dart';
 import 'package:newst/features/main/main_screen.dart';
 import 'package:newst/features/onboarding/controller/onboarding_controller.dart';
 import 'package:newst/features/onboarding/models/onboarding_model.dart';
+import 'package:newst/features/splash/controllers/splash_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -21,6 +24,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void dispose() {
     pageController.dispose();
     super.dispose();
+  }
+
+  Future<void> _finishOnboarding() async {
+    await context.read<OnboardingController>().completeOnboarding();
+
+    if (!mounted) return;
+
+    final isLoggedIn = context.read<SplashController>().isLoggedIn;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => isLoggedIn ? const MainScreen() : const SignInScreen(),
+      ),
+    );
   }
 
   @override
@@ -50,21 +68,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               child: Align(
                                 alignment: Alignment.topRight,
                                 child: TextButton(
-                                  onPressed: () async {
-                                    // Skip logic will be added later.
-                                    await context
-                                        .read<OnboardingController>()
-                                        .completeOnboarding();
-
-                                    if (!context.mounted) return;
-
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const MainScreen(),
-                                      ),
-                                    );
-                                  },
+                                  // Skip logic will be added later.
+                                  onPressed: _finishOnboarding,
                                   child: const Text('Skip'),
                                 ),
                               ),
@@ -169,35 +174,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: Selector<OnboardingController, bool>(
                     selector: (context, controller) => controller.isLastPage,
                     builder: (context, isLastPage, child) {
-                      return SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (isLastPage) {
-                              // Get Started logic
+                      return CustomButton(
+                        text: isLastPage ? 'Get Started' : 'Next',
+                        onPressed: () async {
+                          if (isLastPage) {
+                            await _finishOnboarding();
+                            return;
+                          }
 
-                              await context
-                                  .read<OnboardingController>()
-                                  .completeOnboarding();
-
-                              if (!context.mounted) return;
-
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MainScreen(),
-                                ),
-                              );
-                              return;
-                            }
-
-                            pageController.nextPage(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                          child: Text(isLastPage ? 'Get Started' : 'Next'),
-                        ),
+                          pageController.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        },
                       );
                     },
                   ),

@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPreferences {
   static const String _hasSeenOnboardingKey = 'hasSeenOnboarding';
-  static const String _isLoggedInKey = 'isLoggedIn';
+  // static const String _isLoggedInKey = 'isLoggedIn';
 
   AppPreferences._();
 
@@ -22,11 +22,11 @@ class AppPreferences {
     return await _preferences.getBool(_hasSeenOnboardingKey) ?? false;
   }
 
-  Future<void> setIsLoggedIn(bool value) async {
-    await _preferences.setBool(_isLoggedInKey, value);
-  }
+  // Future<void> setIsLoggedIn(bool value) async {
+  //   await _preferences.setBool(_isLoggedInKey, value);
+  // }
 
-  Future<bool> get isLoggedIn async {
-    return await _preferences.getBool(_isLoggedInKey) ?? false;
-  }
+  // Future<bool> get isLoggedIn async {
+  //   return await _preferences.getBool(_isLoggedInKey) ?? false;
+  // }
 }
