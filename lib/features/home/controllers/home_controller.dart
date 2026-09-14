@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newst/core/enums/request_status.dart';
 import 'package:newst/core/network/api_exception.dart';
 import 'package:newst/features/home/models/article_model.dart';
 import 'package:newst/features/home/services/news_service.dart';
@@ -8,20 +9,16 @@ class HomeController extends ChangeNotifier {
 
   // Top Headlines
   List<ArticleModel> topHeadlinesArticles = [];
-
-  bool isTopHeadlinesLoading = false;
-
+  RequestStatus topHeadlinesStatus = RequestStatus.loading;
   String? topHeadlinesErrorMessage;
 
   // Everything
   List<ArticleModel> everythingArticles = [];
-
-  bool isEverythingLoading = false;
-
+  RequestStatus everythingStatus = RequestStatus.loading;
   String? everythingErrorMessage;
 
   Future<void> fetchTopHeadlines() async {
-    isTopHeadlinesLoading = true;
+    topHeadlinesStatus = RequestStatus.loading;
     topHeadlinesErrorMessage = null;
 
     notifyListeners();
@@ -30,34 +27,35 @@ class HomeController extends ChangeNotifier {
       final articles = await newsService.getTopHeadlines();
 
       topHeadlinesArticles = articles;
+      topHeadlinesStatus = RequestStatus.success;
     } on ApiException catch (e) {
       topHeadlinesErrorMessage = e.message;
+      topHeadlinesStatus = RequestStatus.error;
     } catch (e) {
       topHeadlinesErrorMessage = 'Something went wrong';
+      topHeadlinesStatus = RequestStatus.error;
     }
-
-    isTopHeadlinesLoading = false;
 
     notifyListeners();
   }
 
   Future<void> fetchEverything() async {
-    isEverythingLoading = true;
+    everythingStatus = RequestStatus.loading;
     everythingErrorMessage = null;
-
     notifyListeners();
 
     try {
       final articles = await newsService.getEverything();
 
       everythingArticles = articles;
+      everythingStatus = RequestStatus.success;
     } on ApiException catch (e) {
       everythingErrorMessage = e.message;
+      everythingStatus = RequestStatus.error;
     } catch (e) {
       everythingErrorMessage = 'Something went wrong';
+      everythingStatus = RequestStatus.error;
     }
-
-    isEverythingLoading = false;
 
     notifyListeners();
   }
