@@ -17,6 +17,8 @@ class HomeController extends ChangeNotifier {
   RequestStatus everythingStatus = RequestStatus.loading;
   String? everythingErrorMessage;
 
+  String selectedCategory = 'general';
+
   Future<void> fetchTopHeadlines() async {
     topHeadlinesStatus = RequestStatus.loading;
     topHeadlinesErrorMessage = null;
@@ -24,7 +26,9 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final articles = await newsService.getTopHeadlines();
+      final articles = await newsService.getTopHeadlines(
+        category: selectedCategory,
+      );
 
       topHeadlinesArticles = articles;
       topHeadlinesStatus = RequestStatus.success;
@@ -58,5 +62,10 @@ class HomeController extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  void selectCategory(String category) {
+    selectedCategory = category;
+    fetchTopHeadlines();
   }
 }

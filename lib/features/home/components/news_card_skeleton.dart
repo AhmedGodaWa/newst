@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NewsCardSkeleton extends StatelessWidget {
-  const NewsCardSkeleton({super.key});
+  final double width;
+  final double height;
+
+  const NewsCardSkeleton({
+    super.key,
+    required this.width,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,8 +17,8 @@ class NewsCardSkeleton extends StatelessWidget {
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,
       child: Container(
-        width: 235,
-        height: 140,
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newst/core/config/supabase_config.dart';
 import 'package:newst/core/storage/app_preferences.dart';
 import 'package:newst/core/theme/app_theme.dart';
+import 'package:newst/features/home/controllers/home_controller.dart';
 import 'package:newst/features/onboarding/controller/onboarding_controller.dart';
 import 'package:newst/features/splash/controllers/splash_controller.dart';
 import 'package:newst/features/splash/splash_screen.dart';
@@ -37,6 +38,7 @@ class NewstApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => SplashController()),
             ChangeNotifierProvider(create: (_) => OnboardingController()),
+            ChangeNotifierProvider(create: (_) => HomeController()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

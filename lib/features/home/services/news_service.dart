@@ -5,10 +5,11 @@ import 'package:newst/features/home/models/article_model.dart';
 class NewsService {
   final ApiService apiService = ApiService();
 
-  Future<List<ArticleModel>> getTopHeadlines() async {
+  Future<List<ArticleModel>> getTopHeadlines({required String category}) async {
     final url = Uri.https(ApiConstants.baseUrl, ApiConstants.topHeadlines, {
       'apiKey': ApiConstants.apiKey,
       'country': 'us',
+      'category': category,
     });
 
     final data = await apiService.get(url);

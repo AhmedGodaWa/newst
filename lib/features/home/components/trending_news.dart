@@ -1,40 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:newst/core/enums/request_status.dart';
+import 'package:newst/core/helpers/date_time_helper.dart';
 import 'package:newst/core/theme/app_colors.dart';
 import 'package:newst/features/home/components/news_card_skeleton.dart';
+import 'package:newst/features/home/components/section_header.dart';
 import 'package:newst/features/home/controllers/home_controller.dart';
 import 'package:provider/provider.dart';
 
 class TrendingNews extends StatelessWidget {
   const TrendingNews({super.key});
-
-  String formatDateTime(String? date) {
-    if (date == null || date.isEmpty) {
-      return '';
-    }
-
-    final parsedDate = DateTime.tryParse(date);
-
-    if (parsedDate == null) {
-      return '';
-    }
-
-    final difference = DateTime.now().difference(parsedDate);
-
-    if (difference.inSeconds < 60) {
-      return 'just now';
-    }
-
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
-    }
-
-    if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
-    }
-
-    return '${difference.inDays}d ago';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +23,7 @@ class TrendingNews extends StatelessWidget {
         .toList();
 
     return SizedBox(
-      height: 310,
+      height: 290,
       child: Stack(
         children: [
           // Background
@@ -62,7 +36,7 @@ class TrendingNews extends StatelessWidget {
 
           // Content
           Padding(
-            padding: const EdgeInsets.only(top: 45, right: 16, left: 16),
+            padding: const EdgeInsets.only(top: 45),
             child: Column(
               children: [
                 // Logo
@@ -76,30 +50,23 @@ class TrendingNews extends StatelessWidget {
                 const SizedBox(height: 10),
 
                 // Trending News + View all
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Trending News',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        color: AppColors.onPrimary,
-                      ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: SectionHeader(
+                    title: 'Trending News',
+                    onPressed: () {
+                      // View all trending news
+                    },
+                    titleStyle: theme.textTheme.titleLarge?.copyWith(
+                      color: AppColors.onPrimary,
                     ),
-
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'View all',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: AppColors.onPrimary,
-                          decoration: TextDecoration.underline,
-                          decorationColor: AppColors.onPrimary,
-                        ),
-                      ),
+                    actionStyle: theme.textTheme.bodyLarge?.copyWith(
+                      color: AppColors.onPrimary,
+                      decoration: TextDecoration.underline,
+                      decorationColor: AppColors.onPrimary,
                     ),
-                  ],
+                  ),
                 ),
-
                 const SizedBox(height: 10),
 
                 switch (controller.everythingStatus) {
@@ -107,11 +74,11 @@ class TrendingNews extends StatelessWidget {
                     height: 140,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 4,
+                      itemCount: 10,
                       separatorBuilder: (context, index) =>
                           const SizedBox(width: 10),
                       itemBuilder: (context, index) {
-                        return const NewsCardSkeleton();
+                        return const NewsCardSkeleton(width: 235, height: 140);
                       },
                     ),
                   ),
@@ -120,6 +87,7 @@ class TrendingNews extends StatelessWidget {
                     height: 140,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: articles.take(10).length,
                       separatorBuilder: (context, index) =>
                           const SizedBox(width: 10),
