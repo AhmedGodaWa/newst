@@ -6,19 +6,24 @@ import 'package:newst/features/home/controllers/home_controller.dart';
 import 'package:provider/provider.dart';
 
 class TopNews extends StatelessWidget {
-  const TopNews({super.key});
+  const TopNews({super.key, this.limit});
+
+  final int? limit;
 
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<HomeController>();
 
-    final articles = controller.topHeadlinesArticles
+    final filteredArticles = controller.topHeadlinesArticles
         .where(
           (article) =>
               article.urlToImage != null && article.urlToImage!.isNotEmpty,
         )
-        .take(20)
         .toList();
+
+    final articles = limit == null
+        ? filteredArticles
+        : filteredArticles.take(limit!).toList();
 
     switch (controller.topHeadlinesStatus) {
       case RequestStatus.loading:

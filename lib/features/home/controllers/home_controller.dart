@@ -5,6 +5,9 @@ import 'package:newst/features/home/models/article_model.dart';
 import 'package:newst/features/home/services/news_service.dart';
 
 class HomeController extends ChangeNotifier {
+  HomeController() {
+    initialize();
+  }
   final NewsService newsService = NewsService();
 
   // Top Headlines
@@ -18,6 +21,18 @@ class HomeController extends ChangeNotifier {
   String? everythingErrorMessage;
 
   String selectedCategory = 'general';
+
+  bool _isInitialized = false;
+
+  Future<void> initialize() async {
+    if (_isInitialized) {
+      return;
+    }
+
+    _isInitialized = true;
+
+    await Future.wait([fetchEverything(), fetchTopHeadlines()]);
+  }
 
   Future<void> fetchTopHeadlines() async {
     topHeadlinesStatus = RequestStatus.loading;

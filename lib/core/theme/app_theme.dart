@@ -8,10 +8,11 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     textTheme: AppTextTheme.lightTextTheme,
 
-    // scaffoldBackgroundColor: const Color(0xFFf5f5f5),
+    scaffoldBackgroundColor: AppColors.background,
     appBarTheme: AppBarTheme(
       titleTextStyle: AppTextTheme.lightTextTheme.titleLarge,
       centerTitle: true,
+      backgroundColor: AppColors.white,
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
