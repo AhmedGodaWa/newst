@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:newst/core/enums/request_status.dart';
 import 'package:newst/core/network/api_exception.dart';
 import 'package:newst/features/home/models/article_model.dart';
-import 'package:newst/features/home/services/news_service.dart';
+import 'package:newst/features/home/repositories/news_repository.dart';
 
 class HomeController extends ChangeNotifier {
-  HomeController() {
+  HomeController(this.newsRepository) {
     initialize();
   }
-  final NewsService newsService = NewsService();
+  final NewsRepository newsRepository;
 
   // Top Headlines
   List<ArticleModel> topHeadlinesArticles = [];
@@ -41,7 +41,7 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final articles = await newsService.getTopHeadlines(
+      final articles = await newsRepository.getTopHeadlines(
         category: selectedCategory,
       );
 
@@ -64,7 +64,7 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final articles = await newsService.getEverything();
+      final articles = await newsRepository.getEverything();
 
       everythingArticles = articles;
       everythingStatus = RequestStatus.success;

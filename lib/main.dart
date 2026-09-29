@@ -4,6 +4,8 @@ import 'package:newst/core/config/supabase_config.dart';
 import 'package:newst/core/storage/app_preferences.dart';
 import 'package:newst/core/theme/app_theme.dart';
 import 'package:newst/features/home/controllers/home_controller.dart';
+import 'package:newst/features/home/repositories/news_repository.dart';
+import 'package:newst/features/home/services/news_service.dart';
 import 'package:newst/features/onboarding/controller/onboarding_controller.dart';
 import 'package:newst/features/splash/controllers/splash_controller.dart';
 import 'package:newst/features/splash/splash_screen.dart';
@@ -38,7 +40,10 @@ class NewstApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => SplashController()),
             ChangeNotifierProvider(create: (_) => OnboardingController()),
-            ChangeNotifierProvider(create: (_) => HomeController()),
+            ChangeNotifierProvider(
+              create: (_) =>
+                  HomeController(NewsRepository(NewsService.instance)),
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

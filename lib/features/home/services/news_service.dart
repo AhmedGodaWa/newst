@@ -3,6 +3,11 @@ import 'package:newst/core/network/api_service.dart';
 import 'package:newst/features/home/models/article_model.dart';
 
 class NewsService {
+  // creates this class -> singelton Pattern
+  NewsService._();
+
+  static final NewsService instance = NewsService._();
+
   final ApiService apiService = ApiService();
 
   Future<List<ArticleModel>> getTopHeadlines({required String category}) async {
