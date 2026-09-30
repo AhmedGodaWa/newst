@@ -10,7 +10,7 @@ class NewsRepository {
     return _newsService.getTopHeadlines(category: category);
   }
 
-  Future<List<ArticleModel>> getEverything() {
-    return _newsService.getEverything();
+  Future<List<ArticleModel>> getEverything({String query = 'news'}) {
+    return _newsService.getEverything(query: query);
   }
 }

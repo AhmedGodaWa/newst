@@ -15,6 +15,7 @@ class NewsService {
       'apiKey': ApiConstants.apiKey,
       'country': 'us',
       'category': category,
+      'pageSize': '100',
     });
 
     final data = await apiService.get(url);
@@ -26,10 +27,10 @@ class NewsService {
         .toList();
   }
 
-  Future<List<ArticleModel>> getEverything() async {
+  Future<List<ArticleModel>> getEverything({String query = 'news'}) async {
     final url = Uri.https(ApiConstants.baseUrl, ApiConstants.everything, {
       'apiKey': ApiConstants.apiKey,
-      'q': 'bitcoin',
+      'q': query,
     });
 
     final data = await apiService.get(url);

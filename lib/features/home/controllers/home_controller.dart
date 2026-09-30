@@ -64,7 +64,7 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final articles = await newsRepository.getEverything();
+      final articles = await newsRepository.getEverything(query: 'news');
 
       everythingArticles = articles;
       everythingStatus = RequestStatus.success;

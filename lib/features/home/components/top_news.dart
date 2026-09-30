@@ -88,7 +88,7 @@ class TopNews extends StatelessWidget {
 
                             const SizedBox(width: 4),
 
-                            Flexible(
+                            Expanded(
                               child: Text(
                                 article.author ?? 'CNN News',
                                 maxLines: 1,
