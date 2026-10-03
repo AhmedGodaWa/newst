@@ -16,6 +16,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -23,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -74,6 +76,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
 
                     SizedBox(height: 16.h),
+
+                    CustomTextFormField(
+                      controller: _nameController,
+                      title: 'Name',
+                      hintText: 'Enter your name',
+                      textInputAction: TextInputAction.next,
+                      textInputType: TextInputType.name,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Name is required';
+                        }
+
+                        return null;
+                      },
+                    ),
+
+                    SizedBox(height: 10.h),
 
                     CustomTextFormField(
                       controller: _emailController,
@@ -205,6 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     try {
       await _authService.signUp(
+        name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );

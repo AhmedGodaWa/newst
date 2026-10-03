@@ -12,6 +12,7 @@ class CustomTextFormField extends StatefulWidget {
     this.textInputAction,
     this.textInputType,
     this.isPassword = false,
+    this.readOnly = false,
   });
 
   final String title;
@@ -22,6 +23,7 @@ class CustomTextFormField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final TextInputType? textInputType;
   final bool isPassword;
+  final bool readOnly;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -42,6 +44,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           validator: widget.validator,
           maxLines: widget.maxLines,
           textInputAction: widget.textInputAction,
+          readOnly: widget.readOnly,
           style: Theme.of(context).textTheme.bodyLarge,
           decoration: InputDecoration(
             hintText: widget.hintText,

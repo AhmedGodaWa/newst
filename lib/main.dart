@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:newst/core/config/supabase_config.dart';
 import 'package:newst/core/storage/app_preferences.dart';
 import 'package:newst/core/theme/app_theme.dart';
@@ -16,6 +17,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppPreferences.instance.init();
+
+  await Hive.initFlutter();
 
   await Supabase.initialize(
     url: SupabaseConfig.url,

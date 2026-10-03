@@ -3,6 +3,7 @@ import 'package:newst/features/bookmark/bookmark_screen.dart';
 import 'package:newst/features/home/repositories/news_repository.dart';
 import 'package:newst/features/home/screens/home_screen.dart';
 import 'package:newst/features/home/services/news_service.dart';
+import 'package:newst/features/profile/controller/profile_controller.dart';
 import 'package:newst/features/profile/profile_screen.dart';
 import 'package:newst/features/search/controllers/news_search_controller.dart';
 import 'package:newst/features/search/search_screen.dart';
@@ -25,7 +26,10 @@ class _MainScreenState extends State<MainScreen> {
       child: const SearchScreen(),
     ),
     const BookmarkScreen(),
-    const ProfileScreen(),
+    ChangeNotifierProvider(
+      create: (_) => ProfileController()..initialize(),
+      child: const ProfileScreen(),
+    ),
   ];
 
   @override
