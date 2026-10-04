@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newst/core/enums/request_status.dart';
 import 'package:newst/core/theme/app_colors.dart';
+import 'package:newst/features/news_details/screens/details_screen.dart';
 import 'package:newst/features/search/controllers/news_search_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -123,6 +124,14 @@ class _SearchScreenState extends State<SearchScreen> {
         final article = controller.searchResults[index];
 
         return ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => DetailsScreen(article: article),
+              ),
+            );
+          },
           contentPadding: EdgeInsets.zero,
           leading: const Icon(
             Icons.search,

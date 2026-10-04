@@ -5,6 +5,7 @@ import 'package:newst/core/theme/app_colors.dart';
 import 'package:newst/features/home/components/news_card_skeleton.dart';
 import 'package:newst/features/home/components/section_header.dart';
 import 'package:newst/features/home/controllers/home_controller.dart';
+import 'package:newst/features/news_details/screens/details_screen.dart';
 import 'package:provider/provider.dart';
 
 class TrendingNews extends StatelessWidget {
@@ -94,100 +95,112 @@ class TrendingNews extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final article = articles[index];
 
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Stack(
-                            children: [
-                              Image.network(
-                                article.urlToImage!,
-                                width: 235,
-                                height: 140,
-                                fit: BoxFit.fill,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => DetailsScreen(article: article),
                               ),
+                            );
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Stack(
+                              children: [
+                                Image.network(
+                                  article.urlToImage!,
+                                  width: 235,
+                                  height: 140,
+                                  fit: BoxFit.fill,
+                                ),
 
-                              Positioned.fill(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.black.withValues(alpha: 0.7),
-                                      ],
+                                Positioned.fill(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.black.withValues(alpha: 0.7),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
 
-                              Positioned(
-                                left: 10,
-                                right: 10,
-                                bottom: 8,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      article.title ?? 'No title',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.textTheme.labelLarge!
-                                          .copyWith(
-                                            fontFamily: null,
-                                            color: AppColors.onPrimary,
-                                          ),
-                                    ),
+                                Positioned(
+                                  left: 10,
+                                  right: 10,
+                                  bottom: 8,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        article.title ?? 'No title',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: theme.textTheme.labelLarge!
+                                            .copyWith(
+                                              fontFamily: null,
+                                              color: AppColors.onPrimary,
+                                            ),
+                                      ),
 
-                                    const SizedBox(height: 4),
+                                      const SizedBox(height: 4),
 
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Row(
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundColor: Colors.white,
-                                                child: Image.asset(
-                                                  'assets/images/logos/cnn.png',
-                                                  height: 20,
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundColor: Colors.white,
+                                                  child: Image.asset(
+                                                    'assets/images/logos/cnn.png',
+                                                    height: 20,
+                                                  ),
                                                 ),
-                                              ),
 
-                                              const SizedBox(width: 6),
+                                                const SizedBox(width: 6),
 
-                                              Expanded(
-                                                child: Text(
-                                                  article.author ?? 'CNN News',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: theme
-                                                      .textTheme
-                                                      .bodyMedium!
-                                                      .copyWith(
-                                                        color:
-                                                            AppColors.onPrimary,
-                                                      ),
+                                                Expanded(
+                                                  child: Text(
+                                                    article.author ??
+                                                        'CNN News',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: theme
+                                                        .textTheme
+                                                        .bodyMedium!
+                                                        .copyWith(
+                                                          color: AppColors
+                                                              .onPrimary,
+                                                        ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
 
-                                        Text(
-                                          formatDateTime(article.publishedAt),
-                                          style: theme.textTheme.bodyMedium!
-                                              .copyWith(
-                                                color: AppColors.onPrimary,
-                                                fontSize: 14,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          Text(
+                                            formatDateTime(article.publishedAt),
+                                            style: theme.textTheme.bodyMedium!
+                                                .copyWith(
+                                                  color: AppColors.onPrimary,
+                                                  fontSize: 14,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },
