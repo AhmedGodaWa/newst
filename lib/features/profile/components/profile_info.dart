@@ -1,7 +1,9 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:newst/core/theme/app_colors.dart';
+import 'package:newst/features/auth/data/auth_service.dart';
 import 'package:newst/features/auth/sign_in/sign_in_screen.dart';
+import 'package:newst/features/bookmark/controllers/bookmark_controller.dart';
 import 'package:newst/features/profile/components/personal_info_bottom_sheet.dart';
 import 'package:newst/features/profile/components/profile_option.dart';
 import 'package:newst/features/profile/controller/profile_controller.dart';
@@ -129,8 +131,12 @@ class ProfileInfo extends StatelessWidget {
                   : () async {
                       try {
                         await controller.logout();
-
                         if (!context.mounted) return;
+
+                        // Keep persisted bookmarks for the account, but do
+                        // not expose them while another account is signed out
+                        // or being selected.
+                        context.read<BookmarkController>().clearInMemory();
 
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -141,6 +147,13 @@ class ProfileInfo extends StatelessWidget {
                         );
                       } catch (e) {
                         if (!context.mounted) return;
+
+                        // Supabase sign-out may have succeeded before local
+                        // profile cleanup failed. Do not retain the previous
+                        // user's bookmarks in memory in that case.
+                        if (AuthService().currentSession == null) {
+                          context.read<BookmarkController>().clearInMemory();
+                        }
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Failed to logout')),

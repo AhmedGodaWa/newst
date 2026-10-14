@@ -69,8 +69,11 @@ class ProfileController extends ChangeNotifier {
       }
 
       await _localStorage.clearImagePath();
+      await _localStorage.clearCountry();
 
       _profileImage = null;
+      _userName = null;
+      _country = null;
     } finally {
       _isLoggingOut = false;
       notifyListeners();

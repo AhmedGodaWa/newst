@@ -7,7 +7,9 @@ import 'package:newst/core/widgets/custom_text_form_field.dart';
 import 'package:newst/features/auth/data/auth_error.dart';
 import 'package:newst/features/auth/data/auth_service.dart';
 import 'package:newst/features/auth/sign_up/sign_up_screen.dart';
+import 'package:newst/features/bookmark/controllers/bookmark_controller.dart';
 import 'package:newst/features/main/main_screen.dart';
+import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -164,6 +166,12 @@ class _SignInScreenState extends State<SignInScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
+
+      // The bookmark controller is app-scoped and may have initialized while
+      // the user was signed out. Reload it after authentication so the main
+      // shell immediately reflects this user's saved articles.
+      if (!mounted) return;
+      await context.read<BookmarkController>().loadBookmarks();
 
       if (!mounted) return;
 

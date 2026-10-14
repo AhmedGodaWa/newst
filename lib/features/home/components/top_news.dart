@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:newst/core/enums/request_status.dart';
 import 'package:newst/core/helpers/date_time_helper.dart';
+import 'package:newst/core/theme/app_colors.dart';
+import 'package:newst/features/bookmark/controllers/bookmark_controller.dart';
 import 'package:newst/features/home/components/news_card_skeleton.dart';
 import 'package:newst/features/home/controllers/home_controller.dart';
+import 'package:newst/features/home/models/article_model.dart';
 import 'package:newst/features/news_details/screens/details_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -99,7 +102,7 @@ class TopNews extends StatelessWidget {
                                 ),
                               ),
 
-                              const SizedBox(width: 4),              
+                              const SizedBox(width: 4),
 
                               Expanded(
                                 child: Text(
@@ -117,9 +120,8 @@ class TopNews extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
 
-                              const Spacer(),
-
-                              const Icon(Icons.bookmark_border, size: 25),
+                              // const Spacer(),
+                              _TopNewsBookmarkButton(article: article),
                             ],
                           ),
                         ],
@@ -141,5 +143,51 @@ class TopNews extends StatelessWidget {
           ),
         );
     }
+  }
+}
+
+class _TopNewsBookmarkButton extends StatelessWidget {
+  const _TopNewsBookmarkButton({required this.article});
+
+  final ArticleModel article;
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<BookmarkController, bool>(
+      selector: (_, controller) => controller.isBookmarked(article),
+      builder: (context, isBookmarked, child) {
+        return IconButton(
+          visualDensity: VisualDensity.compact,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          onPressed: () async {
+            final bookmarkController = context.read<BookmarkController>();
+            await bookmarkController.toggleBookmark(article);
+
+            if (!context.mounted) {
+              return;
+            }
+
+            final errorMessage = bookmarkController.errorMessage;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  errorMessage ??
+                      (isBookmarked
+                          ? 'Removed from bookmarks'
+                          : 'Saved to bookmarks'),
+                ),
+              ),
+            );
+          },
+          tooltip: isBookmarked ? 'Remove bookmark' : 'Save bookmark',
+          icon: Icon(
+            isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+            color: isBookmarked ? AppColors.primary : null,
+            size: 25,
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:newst/core/helpers/date_time_helper.dart';
+import 'package:newst/core/theme/app_colors.dart';
+import 'package:newst/features/bookmark/controllers/bookmark_controller.dart';
 import 'package:newst/features/home/components/news_card_skeleton.dart';
 import 'package:newst/features/home/models/article_model.dart';
+import 'package:provider/provider.dart';
 
 class DetailsScreen extends StatelessWidget {
   final ArticleModel article;
@@ -10,6 +13,8 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = article.urlToImage;
+
     return Scaffold(
       appBar: AppBar(title: const Text('News Details')),
       body: SingleChildScrollView(
@@ -20,30 +25,37 @@ class DetailsScreen extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
-                child: Image.network(
-                  article.urlToImage!,
-                  width: double.infinity,
-                  height: 228,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
+                child: imageUrl == null || imageUrl.isEmpty
+                    ? Container(
+                        width: double.infinity,
+                        height: 228,
+                        color: Colors.grey.shade200,
+                        child: const Icon(Icons.image_not_supported),
+                      )
+                    : Image.network(
+                        imageUrl,
+                        width: double.infinity,
+                        height: 228,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
 
-                    return const NewsCardSkeleton(
-                      width: double.infinity,
-                      height: 228,
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: double.infinity,
-                      height: 228,
-                      color: Colors.grey.shade200,
-                      child: const Icon(Icons.image_not_supported),
-                    );
-                  },
-                ),
+                          return const NewsCardSkeleton(
+                            width: double.infinity,
+                            height: 228,
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: double.infinity,
+                            height: 228,
+                            color: Colors.grey.shade200,
+                            child: const Icon(Icons.image_not_supported),
+                          );
+                        },
+                      ),
               ),
 
               const SizedBox(height: 12),
@@ -88,7 +100,43 @@ class DetailsScreen extends StatelessWidget {
 
                   const SizedBox(width: 8),
 
-                  const Icon(Icons.bookmark_border, size: 25),
+                  Selector<BookmarkController, bool>(
+                    selector: (_, controller) =>
+                        controller.isBookmarked(article),
+                    builder: (context, isBookmarked, child) {
+                      return IconButton(
+                        onPressed: () async {
+                          final bookmarkController = context
+                              .read<BookmarkController>();
+                          await bookmarkController.toggleBookmark(article);
+
+                          if (!context.mounted) {
+                            return;
+                          }
+
+                          final errorMessage = bookmarkController.errorMessage;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                errorMessage ??
+                                    (isBookmarked
+                                        ? 'Removed from bookmarks'
+                                        : 'Saved to bookmarks'),
+                              ),
+                            ),
+                          );
+                        },
+                        tooltip: isBookmarked
+                            ? 'Remove bookmark'
+                            : 'Save bookmark',
+                        icon: Icon(
+                          isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                          color: isBookmarked ? AppColors.primary : null,
+                          size: 25,
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
 

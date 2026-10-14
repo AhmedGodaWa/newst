@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:newst/core/config/supabase_config.dart';
 import 'package:newst/core/storage/app_preferences.dart';
 import 'package:newst/core/theme/app_theme.dart';
+import 'package:newst/features/bookmark/controllers/bookmark_controller.dart';
 import 'package:newst/features/home/controllers/home_controller.dart';
 import 'package:newst/features/home/repositories/news_repository.dart';
 import 'package:newst/features/home/services/news_service.dart';
@@ -46,6 +47,9 @@ class NewstApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (_) =>
                   HomeController(NewsRepository(NewsService.instance)),
+            ),
+            ChangeNotifierProvider(
+              create: (_) => BookmarkController()..initialize(),
             ),
           ],
           child: MaterialApp(
