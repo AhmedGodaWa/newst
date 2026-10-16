@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:newst/core/enums/request_status.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newst/core/theme/app_colors.dart';
 import 'package:newst/features/news_details/screens/details_screen.dart';
-import 'package:newst/features/search/controllers/news_search_controller.dart';
-import 'package:provider/provider.dart';
+import 'package:newst/features/search/cubit/news_search_cubit.dart';
+import 'package:newst/features/search/cubit/news_search_state.dart';
+
+import '../home/models/article_model.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -28,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
       return;
     }
 
-    context.read<NewsSearchController>().searchNews(query);
+    context.read<NewsSearchCubit>().searchNews(query);
   }
 
   @override
@@ -69,44 +71,33 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(height: 12),
 
             Expanded(
-              child: Consumer<NewsSearchController>(
-                builder: (context, controller, child) {
-                  if (!controller.hasSearched) {
-                    return const SizedBox.shrink();
-                  }
+              child: BlocBuilder<NewsSearchCubit, NewsSearchState>(
+                builder: (context, state) {
+                  return switch (state) {
+                    SearchInitial() => const SizedBox.shrink(),
 
-                  switch (controller.searchStatus) {
-                    case RequestStatus.loading:
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.searchResult,
-                        ),
-                      );
+                    SearchLoading() => const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.searchResult,
+                      ),
+                    ),
 
-                    case RequestStatus.success:
-                      if (controller.searchResults.isEmpty) {
-                        return Center(
-                          child: Text(
-                            'No results found',
-                            style: Theme.of(context).textTheme.titleMedium!
-                                .copyWith(
-                                  color: AppColors.searchResult,
-                                  fontSize: 25,
-                                ),
-                          ),
-                        );
-                      }
+                    SearchSuccess(:final articles) =>
+                      articles.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No results found',
+                                style: Theme.of(context).textTheme.titleMedium!
+                                    .copyWith(
+                                      color: AppColors.searchResult,
+                                      fontSize: 25,
+                                    ),
+                              ),
+                            )
+                          : _buildSearchResults(articles),
 
-                      return _buildSearchResults(controller);
-
-                    case RequestStatus.error:
-                      return Center(
-                        child: Text(
-                          controller.searchErrorMessage ??
-                              'Something went wrong',
-                        ),
-                      );
-                  }
+                    SearchError(:final message) => Center(child: Text(message)),
+                  };
                 },
               ),
             ),
@@ -116,12 +107,12 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildSearchResults(NewsSearchController controller) {
+  Widget _buildSearchResults(List<ArticleModel> articles) {
     return ListView.separated(
-      itemCount: controller.searchResults.length,
+      itemCount: articles.length,
       separatorBuilder: (_, __) => const Divider(height: 1),
       itemBuilder: (context, index) {
-        final article = controller.searchResults[index];
+        final article = articles[index];
 
         return ListTile(
           onTap: () {

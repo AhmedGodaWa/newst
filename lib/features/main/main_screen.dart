@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newst/features/bookmark/bookmark_screen.dart';
 import 'package:newst/features/home/repositories/news_repository.dart';
 import 'package:newst/features/home/screens/home_screen.dart';
 import 'package:newst/features/home/services/news_service.dart';
 import 'package:newst/features/profile/controller/profile_controller.dart';
 import 'package:newst/features/profile/profile_screen.dart';
-import 'package:newst/features/search/controllers/news_search_controller.dart';
 import 'package:newst/features/search/search_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../search/cubit/news_search_cubit.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -21,8 +23,8 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> pages = [
     const HomeScreen(),
-    ChangeNotifierProvider(
-      create: (_) => NewsSearchController(NewsRepository(NewsService.instance)),
+    BlocProvider(
+      create: (_) => NewsSearchCubit(NewsRepository(NewsService.instance)),
       child: const SearchScreen(),
     ),
     const BookmarkScreen(),
